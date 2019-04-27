@@ -41,4 +41,15 @@ public class Polynomial {
             System.out.println("Degree: " + i + ", Coeff: " + poly[i]);
         }
     }
+
+    public float compute(float p1) {
+
+        float ret = 0;
+
+        for(int i = 0; i < poly.length; i++) {
+            ret += Math.pow(p1, i) * poly[i];
+        }
+
+        return ret;
+    }
 }

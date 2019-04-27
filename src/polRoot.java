@@ -1,3 +1,8 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 public class polRoot {
 
     public static void main(String[] args) {
@@ -42,6 +47,30 @@ public class polRoot {
         float point2 = Float.valueOf(args[4]);
         String fileName = args[5];
         finder.bisection(point1, point2, maxIterations, Float.MIN_VALUE, fileName);
+        outputToFile(fileName, finder);
+        System.out.println("reached end");
+    }
+
+    private static void outputToFile(String fileName, RootFinder finder) {
+
+        try {
+            PrintWriter writer = new PrintWriter("../assets/" + fileName.substring(0, fileName.indexOf(".")) + ".sol");
+
+            String outcome;
+            if(finder.outcome == true) {
+                outcome = "Success";
+            } else {
+                outcome = "Failure";
+            }
+
+            writer.write("Root: " + finder.approxRoot + " Iterations: " + finder.iterations + " Outcome:" + outcome);
+            writer.close();
+
+        } catch(FileNotFoundException e) {
+            System.out.println("File not found.");
+            e.printStackTrace();
+        }
+
     }
 
     private static void startBisection(String[] args) {
@@ -52,5 +81,6 @@ public class polRoot {
         float point2 = Float.valueOf(args[1]);
         String fileName = args[2];
         finder.bisection(point1, point2, 100000, Float.MIN_VALUE, fileName);
+        outputToFile(fileName, finder);
     }
 }
