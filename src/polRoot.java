@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 public class polRoot {
 
+    private static final int DEFAULT_MAXITER = 10000;
+
     public static void main(String[] args) {
 
         if(args.length < 3) {
@@ -20,7 +22,7 @@ public class polRoot {
             }
         }
         else if(args.length == 4) { // standard Secant Method
-
+            startSecant(args);
         }
         else if(args.length == 5) { //max iteration for bisection or newt
 
@@ -31,12 +33,32 @@ public class polRoot {
             }
         }
         else if(args.length == 6) { // max iteration for secant
-
+            startSecantCustomIteration(args);
         }
         else {                      //too many arguments
             System.out.println("You've inputted too many arguments, please try again.");
         }
 
+    }
+
+    private static void startSecant(String[] args){
+        RootFinder finder = new RootFinder();
+        float point1 = Float.valueOf(args[1]);
+        float point2 = Float.valueOf(args[2]);
+        String fileName = args[3];
+        finder.secant(point1, point2, DEFAULT_MAXITER, Float.MIN_VALUE, fileName);
+        outputToFile(fileName, finder);
+
+    }
+
+    private static void startSecantCustomIteration(String[] args){
+        RootFinder finder = new RootFinder();
+        int maxIterations = Integer.valueOf(args[2]);
+        float point1 = Float.valueOf(args[3]);
+        float point2 = Float.valueOf(args[4]);
+        String fileName = args[5];
+        finder.secant(point1, point2, maxIterations, Float.MIN_VALUE, fileName);
+        outputToFile(fileName, finder);
     }
 
     private static void startNewtonsCustomIteration(String[] args) {

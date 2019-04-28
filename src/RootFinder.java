@@ -8,6 +8,59 @@ public class RootFinder {
 
     }
 
+    public void secant(float point1, float point2, int maxIter, float epsilon, String fileName) {
+        Polynomial poly = new Polynomial(fileName);
+
+        float polyOfPoint1 = poly.compute(point1);
+        float polyOfPoint2 = poly.compute(point2);
+
+        if(Math.abs(polyOfPoint1) > Math.abs(polyOfPoint2)){
+            float temp = point1;
+            point1 = point2;
+            point2 = temp;
+            temp = polyOfPoint1;
+            polyOfPoint1 = polyOfPoint2;
+            polyOfPoint2 = temp;
+        }
+
+        for(int iter = 1; iter <= maxIter; iter++) {
+
+            if(Math.abs(polyOfPoint1) > Math.abs(polyOfPoint2)){
+                float temp = point1;
+                point1 = point2;
+                point2 = temp;
+                temp = polyOfPoint1;
+                polyOfPoint1 = polyOfPoint2;
+                polyOfPoint2 = temp;
+            }
+
+            float div = (point2 - point1) / (polyOfPoint2 - polyOfPoint1);
+            point2 = point1;
+            polyOfPoint2 = polyOfPoint1;
+            div = div * polyOfPoint1;
+
+            point1 = point1 - div;
+            polyOfPoint1 = poly.compute(point1);
+
+            if(Math.abs(div) < epsilon) {
+                System.out.println("Algorithm has converged after " + iter + "iterations! At x=" + point1 + ".");
+                outcome = true;
+                approxRoot = polyOfPoint1;
+                iterations = iter;
+                return;
+            }
+
+
+        }
+
+        System.out.println("Max number of iterations reached!");
+        outcome = false;
+        approxRoot = polyOfPoint1;
+        iterations = maxIter;
+    }
+
+
+
     public void newtons(float x, int maxIter, float epsilon, float delta, String fileName){
         Polynomial poly = new Polynomial(fileName);
         Polynomial polyDeriv = poly.getDerivative();
