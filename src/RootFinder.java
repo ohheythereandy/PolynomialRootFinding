@@ -8,6 +8,44 @@ public class RootFinder {
 
     }
 
+    public void newtons(float x, int maxIter, float epsilon, float delta, String fileName){
+        Polynomial poly = new Polynomial(fileName);
+        Polynomial polyDeriv = poly.getDerivative();
+
+        float y = poly.compute(x);
+
+        float diff = 0;
+        for(int index = 1; index <= maxIter; index++) {
+
+            float yDeriv = polyDeriv.compute(x);
+
+            if(Math.abs(yDeriv) < delta){
+                System.out.println("Small slope!");
+                outcome = false;
+                approxRoot = -1;
+                iterations = 1;
+                return;
+            }
+
+            diff = y / yDeriv;
+            x = x - diff;
+            y = poly.compute(x);
+
+            if(Math.abs(y) < epsilon){
+                System.out.println("Algorithm has converged after " + index + " iterations at " + x + "!");
+                outcome = true;
+                approxRoot = y;
+                iterations = index;
+                return;
+            }
+        }
+
+        System.out.println("Max iterations reached without convergence.");
+        outcome = false;
+        approxRoot = y;
+        iterations = maxIter;
+    }
+
     public void bisection(float p1, float p2, int maxIter, float epsilon, String fileName) {
         Polynomial poly = new Polynomial(fileName);
 

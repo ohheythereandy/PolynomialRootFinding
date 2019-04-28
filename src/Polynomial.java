@@ -10,6 +10,11 @@ public class Polynomial {
     int[] poly;
     int degree;
 
+    public Polynomial(int degree){
+        this.degree = degree ;
+        poly = new int[this.degree + 1];
+    }
+
     public Polynomial(String fileName) {
         //append file directory
         loadPolynomial("../assets/" + fileName);
@@ -28,11 +33,22 @@ public class Polynomial {
           }
         }catch (FileNotFoundException e) {
             System.out.println("file not found");
-
-            //test current path
-//            Path path = FileSystems.getDefault().getPath(".");
-//            System.out.println("FilePath is: " + path);
         }
+    }
+
+    public Polynomial getDerivative(){
+
+        int n = degree;
+        Polynomial ret = new Polynomial(degree - 1);
+        for(int i = degree; i > 0; i--){
+            int coeff = poly[i];
+            coeff = coeff * n;
+            n = n - 1;
+            ret.poly[i - 1] = coeff;
+        }
+
+        return ret;
+
     }
 
     public void print(){

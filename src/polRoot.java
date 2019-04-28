@@ -12,8 +12,8 @@ public class polRoot {
         }
         else if(args.length == 3) {
             //either standard bisection, or newton's
-            if(args[0] == "-newt"){ //newton's
-
+            if(args[0].equals("-newt")){ //newton's
+                startNewtons(args);
             } else {
                 //supposed to be bisection
                 startBisection(args);
@@ -24,8 +24,8 @@ public class polRoot {
         }
         else if(args.length == 5) { //max iteration for bisection or newt
 
-            if(args[0] == "-newt"){
-
+            if(args[0].equals( "-newt" )){
+                startNewtonsCustomIteration(args);
             } else {
                 startBisectionCustomIteration(args);
             }
@@ -39,6 +39,26 @@ public class polRoot {
 
     }
 
+    private static void startNewtonsCustomIteration(String[] args) {
+
+        RootFinder finder = new RootFinder();
+
+        int maxIterations = Integer.valueOf(args[2]);
+        float point1 = Float.valueOf(args[3]);
+        String fileName = args[4];
+        finder.newtons(point1, maxIterations, Float.MIN_VALUE, Float.MIN_VALUE, fileName);
+        outputToFile(fileName, finder);
+    }
+
+    private static void startNewtons(String[] args) {
+
+        RootFinder finder = new RootFinder();
+        float point1 = Float.valueOf(args[1]);
+        String fileName = args[2];
+        finder.newtons(point1, 10000, Float.MIN_VALUE, Float.MIN_VALUE, fileName);
+        outputToFile(fileName, finder);
+    }
+
     private static void startBisectionCustomIteration(String[] args) {
         RootFinder finder = new RootFinder();
 
@@ -48,7 +68,6 @@ public class polRoot {
         String fileName = args[5];
         finder.bisection(point1, point2, maxIterations, Float.MIN_VALUE, fileName);
         outputToFile(fileName, finder);
-        System.out.println("reached end");
     }
 
     private static void outputToFile(String fileName, RootFinder finder) {
@@ -80,7 +99,7 @@ public class polRoot {
         float point1 = Float.valueOf(args[0]);
         float point2 = Float.valueOf(args[1]);
         String fileName = args[2];
-        finder.bisection(point1, point2, 100000, Float.MIN_VALUE, fileName);
+        finder.bisection(point1, point2, 10000, Float.MIN_VALUE, fileName);
         outputToFile(fileName, finder);
     }
 }
