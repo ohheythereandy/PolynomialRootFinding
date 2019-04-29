@@ -3,6 +3,7 @@ public class RootFinder {
     public float approxRoot;
     public int iterations;
     public boolean outcome;
+    public float lastPointUsed;
 
     public RootFinder(){
 
@@ -99,11 +100,12 @@ public class RootFinder {
         iterations = maxIter;
     }
 
-    public void bisection(float p1, float p2, int maxIter, float epsilon, String fileName) {
+    public void bisection(float p1, float p2, int maxIter, float epsilon, String fileName, boolean isHybrid) {
         Polynomial poly = new Polynomial(fileName);
 
         float fPoint1 = poly.compute(p1);
         float fPoint2 = poly.compute(p2);
+        float p3 = 0;
 
         if(fPoint1 * fPoint2 >= 0){
             System.out.println("Inadequate value for a and b.");
@@ -118,7 +120,7 @@ public class RootFinder {
         float fPoint3 = 0;
         for(int index = 1; index <= maxIter; index++){
             error /= 2;
-            float p3 = p1 + error;
+            p3 = p1 + error;
             fPoint3 = poly.compute(p3);
 
             if(Math.abs(error) < epsilon || fPoint3 == 0){
@@ -138,9 +140,13 @@ public class RootFinder {
             }
         }
 
-        System.out.println("Max iterations reached without convergence...");
+        if(isHybrid)
+            System.out.println("Switching to newton's using point " + p3);
+        else
+            System.out.println("Max iterations reached without convergence...");
         outcome = false;
         approxRoot = fPoint3;
         iterations = maxIter;
+        lastPointUsed = p3;
     }
 }
