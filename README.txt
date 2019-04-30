@@ -9,7 +9,7 @@ root iterations outcome
 Where root is the last approximation, iterations is the total iterations completed, and outcome is "Success" if it
 converged, or "Fail" if it didn't. The format of the input file is:
 n
-a(n-1) a(n-2) ... a(0)
+a(n) a(n-1) a(n-2) ... b
 where a(n) is the coefficient of the nth degree.
 
 The total default iterations performed is 10,000, but it can also be modified by using the -maxIter flag and providing a

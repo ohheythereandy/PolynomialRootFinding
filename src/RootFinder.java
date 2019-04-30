@@ -12,6 +12,7 @@ public class RootFinder {
     public void secant(float point1, float point2, int maxIter, float epsilon, String fileName) {
         Polynomial poly = new Polynomial(fileName);
 
+
         float polyOfPoint1 = poly.compute(point1);
         float polyOfPoint2 = poly.compute(point2);
 
@@ -35,15 +36,17 @@ public class RootFinder {
                 polyOfPoint2 = temp;
             }
 
+            //check if dividng by 0
+            if((point2 == point1 && polyOfPoint2 == polyOfPoint1)){
+                break;
+            }
             float div = (point2 - point1) / (polyOfPoint2 - polyOfPoint1);
             point2 = point1;
             polyOfPoint2 = polyOfPoint1;
             div = div * polyOfPoint1;
 
-            point1 = point1 - div;
-            polyOfPoint1 = poly.compute(point1);
 
-            if(Math.abs(div) < epsilon) {
+            if(Math.abs(div) < epsilon ) {
                 System.out.println("Algorithm has converged after " + iter + "iterations! At x=" + point1 + ".");
                 outcome = true;
                 approxRoot = polyOfPoint1;
@@ -51,6 +54,9 @@ public class RootFinder {
                 return;
             }
 
+            point1 = point1 - div;
+            polyOfPoint1 = poly.compute(point1);
+            //System.out.println("point1: " + point1 + " F(p1) = " + polyOfPoint1);
 
         }
 
@@ -92,6 +98,8 @@ public class RootFinder {
                 iterations = index;
                 return;
             }
+
+            //System.out.println("p1: " + x + "F(p1): " + y);
         }
 
         System.out.println("Max iterations reached without convergence.");
